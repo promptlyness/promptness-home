@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Promptness – Pro & Free Trial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Promptness: a focused workspace for creating, organizing, and refining AI prompts. Choose the free trial or unlock the full Pro experience.">
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #080c1f;
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.18);
+      --accent-strong: #22c55e;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: #1f2933;
+      --danger: #ef4444;
+      --shadow-soft: 0 20px 45px rgba(15, 23, 42, 0.75);
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --transition-fast: 160ms ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1080px;
+    }
+
+    .shell {
+      background: radial-gradient(circle at top left, #020617 0, #020617 44%, #000 100%);
+      border-radius: 26px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: var(--shadow-soft);
+      padding: 24px 18px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.06) 0, transparent 50%),
+        radial-gradient(circle at 100% 0, rgba(96, 165, 250, 0.06) 0, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(129, 140, 248, 0.09) 0, transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .shell-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(30, 64, 175, 0.4);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 30% 0, #facc15 0, transparent 35%),
+        radial-gradient(circle at 0 100%, #22c55e 0, transparent 40%),
+        radial-gradient(circle at 100% 30%, #38bdf8 0, transparent 40%),
+        #020617;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8), 0 14px 30px rgba(0, 0, 0, 0.85);
+      font-size: 14px;
+      font-weight: 700;
+      color: #e5e7eb;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .brand-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .brand-tagline {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+
+    .trust {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 9px;
+      background: radial-gradient(circle at 0 0, rgba(16, 185, 129, 0.12) 0, transparent 52%);
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(34, 197, 94, 0.30);
+      font-size: 11px;
+      color: #bbf7d0;
+    }
+
+    .trust-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.33);
+    }
+
+    .trust span {
+      opacity: 0.96;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 3.1fr) minmax(0, 2.4fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: radial-gradient(circle at 0 0, rgba(99, 102, 241, 0.25) 0, transparent 52%);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #c7d2fe;
+      width: fit-content;
+    }
+
+    .eyebrow-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(129, 140, 248, 0.7);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+    }
+
+    h1 {
+      font-size: clamp(30px, 3vw, 36px);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      color: #f9fafb;
+    }
+
+    h1 span {
+      background: linear-gradient(120deg, #e5e7eb, #a5b4fc, #4ade80);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subhead {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      max-width: 480px;
+    }
+
+    .subhead strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-bullets {
+      display: grid;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .hero-bullet {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    .hero-bullet-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #bbf7d0;
+      background: radial-gradient(circle at 30% 0, rgba(45, 212, 191, 0.4) 0, transparent 60%);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+      align-items: center;
+    }
+
+    .cta-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 18px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      background: radial-gradient(circle at 0 0, #22c55e 0, #16a34a 40%, #0f766e 100%);
+      color: #022c22;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow:
+        0 0 0 1px rgba(21, 128, 61, 0.85),
+        0 16px 35px rgba(22, 163, 74, 0.60);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .cta-main span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      opacity: 0.9;
+    }
+
+    .cta-main:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow:
+        0 0 0 1px rgba(21, 128, 61, 0.95),
+        0 20px 40px rgba(22, 163, 74, 0.85);
+    }
+
+    .cta-main:active {
+      transform: translateY(0);
+      box-shadow:
+        0 0 0 1px rgba(21, 128, 61, 0.9),
+        0 8px 22px rgba(22, 163, 74, 0.65);
+    }
+
+    .cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.65);
+      background: radial-gradient(circle at 100% 0, rgba(129, 140, 248, 0.25) 0, transparent 60%);
+      color: #e5e7eb;
+      font-size: 12px;
+      text-decoration: none;
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .cta-secondary span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #a5b4fc;
+    }
+
+    .cta-secondary:hover {
+      background: radial-gradient(circle at 100% 0, rgba(129, 140, 248, 0.45) 0, transparent 60%);
+      border-color: rgba(129, 140, 248, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .cta-caption {
+      flex-basis: 100%;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .cta-caption strong {
+      color: #a5b4fc;
+      font-weight: 500;
+    }
+
+    .cta-caption-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.9);
+    }
+
+    .footer-note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .footer-note span {
+      color: #f97316;
+    }
+
+    .offer {
+      background: radial-gradient(circle at 0 0, rgba(79, 70, 229, 0.40) 0, #020617 55%);
+      border-radius: 20px;
+      border: 1px solid rgba(129, 140, 248, 0.85);
+      padding: 16px 16px 14px;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.22) 0, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.18) 0, transparent 52%);
+      opacity: 0.90;
+      pointer-events: none;
+    }
+
+    .offer-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .offer-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .offer-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.20em;
+      color: #c7d2fe;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .offer-label-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(129, 140, 248, 0.8);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: #e5e7eb;
+    }
+
+    .offer-pulse {
+      font-size: 10px;
+      color: #bbf7d0;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .offer-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.4);
+    }
+
+    .offer-headline {
+      font-size: 17px;
+      line-height: 1.3;
+      color: #f9fafb;
+    }
+
+    .offer-headline span {
+      color: #4ade80;
+    }
+
+    .offer-copy {
+      font-size: 12px;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    .offer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 10px;
+      align-items: flex-start;
+      margin-top: 4px;
+    }
+
+    .offer-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .offer-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      color: #e5e7eb;
+    }
+
+    .offer-check {
+      width: 15px;
+      height: 15px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(22, 163, 74, 0.18);
+      border: 1px solid rgba(34, 197, 94, 0.85);
+      color: #bbf7d0;
+      font-size: 10px;
+    }
+
+    .offer-pill {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.85);
+      background: rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: flex-start;
+    }
+
+    .offer-pill span {
+      color: #a5b4fc;
+    }
+
+    .offer-price {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #cbd5f5;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .offer-price strong {
+      font-size: 20px;
+      letter-spacing: 0.03em;
+      color: #e5e7eb;
+    }
+
+    .offer-price small {
+      font-size: 10px;
+      opacity: 0.85;
+    }
+
+    .offer-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .offer-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: var(--radius-pill);
+      background: #f97316;
+      background: radial-gradient(circle at 0 0, #fed7aa 0, #f97316 40%, #c2410c 100%);
+      color: #1b1306;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      text-decoration: none;
+      box-shadow:
+        0 0 0 1px rgba(248, 171, 85, 0.85),
+        0 14px 32px rgba(248, 171, 85, 0.85);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    }
+
+    .offer-btn-primary span {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      opacity: 0.96;
+    }
+
+    .offer-btn-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow:
+        0 0 0 1px rgba(248, 171, 85, 0.95),
+        0 18px 40px rgba(248, 171, 85, 0.95);
+    }
+
+    .offer-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      font-size: 11px;
+      text-decoration: none;
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .offer-btn-secondary span {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #a5b4fc;
+    }
+
+    .offer-btn-secondary:hover {
+      background: radial-gradient(circle at 100% 0, rgba(129, 140, 248, 0.45) 0, transparent 60%);
+      border-color: rgba(129, 140, 248, 0.95);
+      transform: translateY(-1px);
+    }
+
+    .offer-footnote {
+      font-size: 10px;
+      color: #c7d2fe;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .offer-footnote strong {
+      color: #bfdbfe;
+    }
+
+    .offer-footnote-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.9);
+    }
+
+    @media (max-width: 800px) {
+      body {
+        padding: 20px 12px;
+      }
+
+      .shell {
+        padding: 18px 14px 16px;
+      }
+
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .offer {
+        order: -1;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .cta-row {
+        align-items: stretch;
+      }
+
+      .cta-main,
+      .cta-secondary {
+        flex: 1 1 100%;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .cta-caption {
+        margin-top: 4px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 16px 10px;
+      }
+
+      .shell {
+        border-radius: 18px;
+      }
+
+      .brand-tagline {
+        font-size: 10px;
+      }
+
+      .subhead {
+        font-size: 13px;
+      }
+
+      .offer-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .offer-price {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="shell">
+      <div class="shell-inner">
+        <header class="topbar">
+          <div class="brand">
+            <div class="badge-logo">P</div>
+            <div class="brand-text">
+              <div class="brand-name">Promptness</div>
+              <div class="brand-tagline">Prompt systems without the guesswork</div>
+            </div>
+          </div>
+          <div class="trust">
+            <span class="trust-dot"></span>
+            <span>Built for prompt engineers, founders, and operators</span>
+          </div>
+        </header>
+
+        <div class="layout">
+          <!-- LEFT: Hero -->
+          <div class="hero">
+            <div class="eyebrow">
+              <span class="eyebrow-pill">Prompt Workspace</span>
+              <span>Ship better prompts in minutes</span>
+            </div>
+            <h1>
+              Turn scattered notes into a clear <span>prompt system</span>.
+            </h1>
+            <p class="subhead">
+              Promptness is a focused space to design, test, and version AI prompts so you can move from “good enough” drafts to **repeatable outputs** that your team can trust.
+            </p>
+
+            <div class="hero-bullets">
+              <div class="hero-bullet">
+                <div class="hero-bullet-icon">✓</div>
+                <span>Organize prompts, instructions, and examples in one structured workspace.</span>
+              </div>
+              <div class="hero-bullet">
+                <div class="hero-bullet-icon">✓</div>
+                <span>Clone and adapt prompt frameworks for new use‑cases in seconds.</span>
+              </div>
+              <div class="hero-bullet">
+                <div class="hero-bullet-icon">✓</div>
+                <span>Keep context, reasoning steps, and refinements versioned instead of lost in chats.</span>
+              </div>
+            </div>
+
+            <div class="cta-row">
+              <!-- Primary: Trial -->
+              <a class="cta-main" href="https://promptlyness.github.io/trypromptness/">
+                <div>
+                  Start free trial
+                  <span>no card • live in 60s</span>
+                </div>
+              </a>
+
+              <!-- Secondary: Pro -->
+              <a class="cta-secondary" href="https://promptlyness.github.io/promptness/">
+                <div>
+                  Go straight to Pro
+                  <span>for teams & heavy users</span>
+                </div>
+              </a>
+
+              <div class="cta-caption">
+                <div class="cta-caption-dot"></div>
+                <span><strong>You can switch</strong> from trial to Pro workspace anytime without losing your prompt library.</span>
+              </div>
+            </div>
+
+            <p class="footer-note">
+              Building a prompt library already? Paste your existing prompts into Promptness and tag them by use‑case, role, or client in a single **run‑through**.
+            </p>
+          </div>
+
+          <!-- RIGHT: Offer card -->
+          <aside class="offer" aria-label="Promptness plans">
+            <div class="offer-inner">
+              <div class="offer-label-row">
+                <div class="offer-label">
+                  Plans
+                  <span class="offer-label-pill">Trial → Pro</span>
+                </div>
+                <div class="offer-pulse">
+                  <span class="offer-pulse-dot"></span>
+                  Live in under 2 minutes
+                </div>
+              </div>
+
+              <div>
+                <p class="offer-headline">
+                  Start with the trial, keep the <span>Pro‑grade workflow</span>.
+                </p>
+                <p class="offer-copy">
+                  Trial gives you the core Promptness workflow so you can validate fit quickly. Pro unlocks advanced structure and more space for your growing prompt library.
+                </p>
+              </div>
+
+              <div class="offer-grid">
+                <div class="offer-list">
+                  <div class="offer-item">
+                    <div class="offer-check">✓</div>
+                    <span><strong>Trial workspace:</strong> create, tag, and refine prompts with a focused layout.</span>
+                  </div>
+                  <div class="offer-item">
+                    <div class="offer-check">✓</div>
+                    <span><strong>Pro workspace:</strong> more boards, more prompts, and room for multiple projects.</span>
+                  </div>
+                  <div class="offer-item">
+                    <div class="offer-check">✓</div>
+                    <span>Designed for agents, SOPs, client deliverables, and productized prompt systems.</span>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="offer-pill">
+                    <span>Suggested flow</span>
+                    Try first → upgrade only if it replaces your current prompt docs.
+                  </div>
+                  <div class="offer-price">
+                    <strong>Trial: free</strong>
+                    <small>Pro: see pricing in the Pro workspace</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="offer-actions">
+                <a class="offer-btn-primary" href="https://promptlyness.github.io/trypromptness/">
+                  <div>
+                    Start with free trial
+                    <span>recommended for first‑time users</span>
+                  </div>
+                </a>
+                <a class="offer-btn-secondary" href="https://promptlyness.github.io/promptness/">
+                  <div>
+                    Skip ahead to Pro
+                    <span>already validated your workflow</span>
+                  </div>
+                </a>
+              </div>
+
+              <div class="offer-footnote">
+                <div class="offer-footnote-dot"></div>
+                <span><strong>No migration pain:</strong> your prompts, tags, and notes follow you when you upgrade.</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
